@@ -239,8 +239,20 @@ namespace Generate_Code.Global_Classes
             sb.AppendLine($"                string Query = \"INSERT INTO {Table} ({string.Join(", ", values.Skip(1).Select(c => $"{c.Name}"))}) VALUES ({string.Join(", ", values.Skip(1).Select(c => $"@{c.Name}"))});Select SCOPE_IDENTITY();\";\n");
             sb.AppendLine("                using (SqlCommand Command = new SqlCommand(Query, Connection))");
             sb.AppendLine("                {");
+
             for (int i = 1 ; i < values.Count; i++)
+            {
+                if (values[i].IsNullable)
+                {
+                    sb.AppendLine($"                    if ({values[i].Name} == {clsSystem.DefaultValue(values[i].DataType , true)})");
+                    sb.AppendLine($"                        Command.Parameters.AddWithValue(\"@{values[i].Name}\", DBNull.Value);");
+                    sb.Append($"                    else\n    ");
+
+                }
                 sb.AppendLine($"                    Command.Parameters.AddWithValue(\"@{values[i].Name}\", {values[i].Name});\n");
+
+            }
+
             sb.AppendLine("                    try");
             sb.AppendLine("                    {");
             sb.AppendLine("                        await Connection.OpenAsync();\n");
@@ -269,7 +281,17 @@ namespace Generate_Code.Global_Classes
             sb.AppendLine("                {");
             sb.AppendLine($"                    Command.Parameters.AddWithValue(\"@ID\", {values[0].Name});\n");
             for (int i = 1; i < values.Count; i++)
+            {
+                if (values[i].IsNullable)
+                {
+                    sb.AppendLine($"                    if ({values[i].Name} == {clsSystem.DefaultValue(values[i].DataType, true)})");
+                    sb.AppendLine($"                        Command.Parameters.AddWithValue(\"@{values[i].Name}\", DBNull.Value);");
+                    sb.Append($"                    else\n    ");
+
+                }
                 sb.AppendLine($"                    Command.Parameters.AddWithValue(\"@{values[i].Name}\", {values[i].Name});\n");
+
+            }
             sb.AppendLine("                    try");
             sb.AppendLine("                    {");
             sb.AppendLine("                        await Connection.OpenAsync();\n");
