@@ -47,6 +47,8 @@ namespace Generate_Code.Generate
 
             dgvTables.Rows.Add("clsSettings.cs");
 
+            dgvTables.Rows.Add("clsGenerics.cs");
+
             lbCount.Text = dgvTables.Rows.Count.ToString() + " File(s)";
 
         }
@@ -84,12 +86,16 @@ namespace Generate_Code.Generate
 
                         string BusinessLayer = clsGenerate.BusinessLayer(Table , Columns);
                         string DataLayer = clsGenerate.DataLayer(Table , Columns);
+                        string StoredProcedures = clsGenerate.StoredProcedures(Table , Columns);
 
                         string BusinessPath = Path.Combine(BusinessLayerPath, "cls" + Table + ".cs");
                         string DataPath = Path.Combine(DataLayerPath, "cls" + Table + "Data.cs");
 
+                        string StoredProceduresPath = Path.Combine(DataLayerPath, "StoredProceduresOf" + Table + ".sql");
+
                         clsSystem.SaveToFile(BusinessPath , BusinessLayer);
                         clsSystem.SaveToFile(DataPath , DataLayer);
+                        clsSystem.SaveToFile(StoredProceduresPath , StoredProcedures);
                     }
                     catch (Exception ex)
                     {
@@ -106,6 +112,9 @@ namespace Generate_Code.Generate
 
             string SettingsPath = Path.Combine(DataLayerPath, "clsSettings.cs");
             clsSystem.SaveToFile(SettingsPath , clsGenerate.Settings());
+
+            string GenericsPath = Path.Combine(DataLayerPath, "clsGenerics.cs");
+            clsSystem.SaveToFile(GenericsPath, clsGenerate.Generics());
 
             stopwatch.Stop();
 

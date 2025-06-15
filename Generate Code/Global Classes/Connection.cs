@@ -15,6 +15,8 @@ namespace Generate_Code.Global_Classes
 
         private static string Server , UserId , Password ;
 
+        public static string DBName;
+
         public static async Task<bool> Connect(string server , string userId , string password)
         {
             string loginConnectionString = $"Server={server};User Id={userId};Password={password}";
@@ -89,6 +91,8 @@ namespace Generate_Code.Global_Classes
                         ORDER BY name;";
 
                     await Connection.OpenAsync();
+
+                    DBName = DB;
 
                     using (SqlCommand cmd = new SqlCommand(Query, Connection))
                     {

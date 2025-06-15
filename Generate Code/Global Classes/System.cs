@@ -16,7 +16,7 @@ namespace Generate_Code.Global_Classes
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Error_Log.txt");
             string Message = $"[{DateTime.Now}] {ex.Message}\n{ex.StackTrace}\n\n";
 
-            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
             using (StreamWriter sw = new StreamWriter(fs))
             {
                 sw.WriteLine(Message);
