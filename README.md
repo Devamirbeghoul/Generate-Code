@@ -11,6 +11,7 @@ This code generator creates a complete data access layer (DAL) and business logi
 - **Repository Pattern Implementation** - CRUD operations for all entities
 - **Connection Management** - Secure connection handling with retry logic
 - **Bulk Operations** - High-performance bulk insert/update/delete
+- - **Stored Procedures** -  CRUD operations for all entities
 
 ### BusinessLayer (C#)
 
